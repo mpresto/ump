@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home Page</title>
+</head>
+<body>
+    <h2>Welcome to the User Database</h2>
+    <table border="1">
+        <td>USER ID</td>
+        <td>USERNAME</td>
+        <td>FULL NAME</td>
+        <td>EMAIL</td>
+        <td>BIRTH YEAR</td>
+        <td>MEMBER SINCE</td>
+        {% for user in users %}
+        <tr data-href="http://localhost:8000/users/<id>/">
+            <td>{{user.id}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.fullname}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.birth_year}}</td>
+            <td>{{user.registration_date}}</td>
+        </tr>
+
+        {% endfor %}
+    </table>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const rows = document.querySelectorAll("tr[data-href]");
+            rows.forEach(row => {
+                row.addEventListener("click", () => {
+                    window.location.href = row.dataset.href;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

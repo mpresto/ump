@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Detail Page</title>
+</head>
+<a href="http://localhost:8000/home/" class="button">Return Home</a>
+<body>
+    <div>
+    <h3>{{ user.username }}</h3>
+    <p>full name: {{ user.fullname }}</p>
+    <p>email: {{ user.email }}</p>
+    <p> year of birth: {{ user.birth_year }}</p>
+    </div>
+<div>
+  <p>Date of Registration: {{ user.registration_date|date }}</p>
+</div>
+
+</body>
+</html>
