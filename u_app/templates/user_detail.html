@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html>
+
+{% extends 'base.html' %}
+
+{% block content %}
+
 <head>
-    <title>User Detail Page</title>
 </head>
-<a href="http://localhost:8000/home/" class="button">Return Home</a>
+<h2>User Detail Page</h2>
 <body>
+    <p>You are viewing user details for:<p><h3>{{ user.username }}</h3>
     <div>
-    <h3>{{ user.username }}</h3>
-    <p>full name: {{ user.fullname }}</p>
-    <p>email: {{ user.email }}</p>
-    <p> year of birth: {{ user.birth_year }}</p>
+    <p>NAME: {{ user.fullname }}
+    <br>EMAIL: {{ user.email }}
+    <br>BIRTH YEAR: {{ user.birth_year }}</p>
     </div>
 <div>
-  <p>Date of Registration: {{ user.registration_date|date }}</p>
+  <p>USER SINCE: {{ user.registration_date|date }}</p>
 </div>
 
 </body>
+
+{% endblock content %}
 </html>

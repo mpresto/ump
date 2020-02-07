@@ -19,9 +19,10 @@ from django.urls import path, include
 from u_app import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('home/', views.home, name='home'),
-    path('users/<id>/', views.user_detail, name='user_detail')
-    # path('register/',views.register, name='register'),
-    # path('login/', views.login, name='login'),
+    path('admin', admin.site.urls),
+    path('home', views.home, name='home'),
+    path('users', views.users, name='users'),
+    path('users/<id>', views.user_detail, name='user_detail'),
+    # path('register',views.register, name='register'),
+    # path('login', views.login, name='login'),
 ]
