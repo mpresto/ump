@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+{% extends 'base.html' %}
+
+{% block content %}
+
+<head>
+    <title>Registration Page</title>
+</head>
+
+<body>
+<h2>Registration</h2>
+
+<form method="post" action="{% url 'register' %}">
+
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" name="next" value="{% url 'home' %}">register</button>
+<!--     <input type="hidden" name="next" value="{% url 'home' %}"/> -->
+</form>
+<!--     <p>If you are a returning user, please </p><a href="http://localhost:8000/login">Log In</a>  -->
+</body>
+
+{% endblock content %}
+</html>

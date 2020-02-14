@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+</head>
+
+<body>
     <a href="{% url 'home' %}">The User Database</a>
-    <a href="http://localhost:8000/users" class="button">User Table</a>
+    <a href="{% url 'users' %}">User Table</a>
+    <a href="{% url 'register' %}">Register</a>
 
 {% block content %}{% endblock content %}
-</head>
-<p>
-</p>
-<body>
-
 </body>
 </html>

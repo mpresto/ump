@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
 
+<head>
+    <title>User Database Table</title>
+</head>
+
 {% extends 'base.html' %}
 
 {% block content %}
-<head>
-    <title>User Database</title>
-</head>
+
 <body>
     <h2>User Table</h2>
     <table border="1">
@@ -29,17 +31,7 @@
         {% endfor %}
     </table>
 
-{% endblock content %}
-
-<!--     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const rows = document.querySelectorAll("tr[data-href]");
-            rows.forEach(row => {
-                row.addEventListener("click", () => {
-                    window.location.href = row.dataset.href;
-                });
-            });
-        });
-    </script> -->
 </body>
+
+{% endblock content %}
 </html>

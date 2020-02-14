@@ -1,12 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+# from django.contrib.auth.forms import UserCreationForm
 
 
-from .models import User
+from .models import User, Registration_Form
+# from .forms import Registration_Form
+import datetime
 
 # Create your views here.
 
@@ -31,18 +34,25 @@ def user_detail(request, id):
     return render(request, 'user_detail.html', {'user': user})
 
 
-# def register_user(request):
-#     """Register a new user"""
-#     if request.method != 'POST':
-#         # display blank form
-#         form = UserCreationForm()
-#     else:
-#         new_user = form.save()
-#         # Log the user in and then redirect to home page
-#         authenticated_user = authenticate(
-#             username=new_user.username,
-#             password=request.POST['password1'])
-#         login(request, authenticated_user)
-#         return HttpResponseRedirect()
+def register_user(request):
+    """Register a new user"""
+    # create blank form
+    if request.method != 'POST':
+        form = Registration_Form()
 
+    else:
+        #Process created form
+        form = Registration_Form(data=request.POST)
+
+        if form.is_valid():
+            # save form
+            new_user = form.save()
+            new_user.last_login = timezone.now()
+            authenticated_user = authenticate(username=new_user.username,
+                password=request.POST)
+        # log the new user in 
+            login(request, new_user)
+            return HttpResponseRedirect('home')
+    context = {'form': form}
+    return render(request, 'register.html', context)
 
