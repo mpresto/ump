@@ -103,6 +103,23 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Password Hashers
+# never remove password hashers that have previously been used or else old passwords cannot be upgraded
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+]
+
+# My Users
+
+AUTH_USER_MODEL = 'u_app.MyUser'
+
+
+#URL Settings
+LOGIN_URL = 'login'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -116,6 +133,11 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+# Input formats
+
+DATE_INPUT_FORMATS = ['%d-%m-%Y']
 
 
 # Static files (CSS, JavaScript, Images)

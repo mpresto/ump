@@ -13,19 +13,19 @@
     <h2>User Table</h2>
     <table border="1">
         <td>USER ID</td>
-        <td>USERNAME</td>
         <td>FULL NAME</td>
         <td>EMAIL</td>
-        <td>BIRTH YEAR</td>
+        <td>BIRTH DATE</td>
         <td>MEMBER SINCE</td>
+        <td>LAST LOGIN</td>
         {% for user in users %}
         <tr>
             <td><a href="http://localhost:8000/users/{{user.id}}">{{user.id}}</a></td>
-            <td>{{user.username}}</td>
-            <td>{{user.fullname}}</td>
-            <td>{{user.email}}</td>
-            <td>{{user.birth_year}}</td>
-            <td>{{user.registration_date}}</td>
+            <td>{{ user.full_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.birth_date|date }}</td>
+            <td>{{ user.registration_date|date }}</td>
+            <td>{{ user.last_login|date }}</td>
         </tr>
 
         {% endfor %}

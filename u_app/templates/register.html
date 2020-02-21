@@ -17,9 +17,8 @@
     {{ form.as_p }}
 
     <button type="submit" name="next" value="{% url 'home' %}">register</button>
-<!--     <input type="hidden" name="next" value="{% url 'home' %}"/> -->
 </form>
-<!--     <p>If you are a returning user, please </p><a href="http://localhost:8000/login">Log In</a>  -->
+    <p>If you are a returning user, please <a href="http://localhost:8000/login">login</a></p>
 </body>
 
 {% endblock content %}
