@@ -4,6 +4,8 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
 
 from django.contrib.auth.hashers import PBKDF2PasswordHasher # for hashing, duh
 
@@ -72,38 +74,32 @@ def my_login(request):
     return TemplateResponse(request, 'login.html')
 
 def submit_login(request):
-    # return HttpResponse("Yooooo")
     """Log in an existing user"""
     # submit form input
-    email = request.POST.get('username')
+    email = request.POST.get('email')
     password = request.POST.get('password')
 
-
-    # string = repr({'email-submitted': email, 'password-submiited': password })
-    # return HttpResponse(string)
-
-
-
-    # authenticate the user
-    # user = authenticate(request, email=email, password=password)
-
-    # pull one user by email (based on form input email)
+    # pull one user by email (based on form input email):
     try:
         user = MyUser.objects.get(email=email)
     except MyUser.DoesNotExist:
-        # if not found user return false authentication
-        raise Http404('User not found.')
+        # if user not found, return false authentication
+            # raise Http404('User not found.')
+        messages.add_message(request, messages.INFO, 'Please try again!')
+        return render(request, 'login.html')
 
+    # define password requirements:
     legitpassword = user.password == password
 
     # compare form input password to found user
-
     if legitpassword is True:
         login(request, user)
-        # messages.info(request, "Logged in successfully!")
-        return HttpResponse("Logged in successfully!")
+        messages.add_message(request, messages.SUCCESS, 'Logged in successfully!')
+        return render(request, 'home.html')
+
     else:
-        return HttpResponse("NOT Logged in :(")
+        messages.add_message(request, messages.INFO, 'Please try again!')
+        return render(request, 'login.html')
 
 
 
