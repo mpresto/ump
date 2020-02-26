@@ -68,10 +68,11 @@ def register_user(request):
 
 
 
-# WORKING ON MANUAL LOGIN/LOGOUT METHODS
+# MANUAL LOGIN/AUTHENTICATION
 
 def my_login(request): 
     return TemplateResponse(request, 'login.html')
+
 
 def submit_login(request):
     """Log in an existing user"""
@@ -102,13 +103,17 @@ def submit_login(request):
         return render(request, 'login.html')
 
 
+def about_me(request):
+    """About Me page for my website"""
+    return TemplateResponse(request, 'about_me.html')
 
 
-# def logout_view(request):
-#     logout(request)
-#     # Redirect to a success page.
-#     messages.info(request, "Logged out successfully!")
-#     return render(request, 'home.html')
+def doggo_polling(request):
+    """Page for voting on your favorite pups!"""
+    return TemplateResponse(request, 'doggo_poll.html')
+    # return HttpResponse('Get ready for cute dogs')
 
 
-
+def submit_vote(request):
+    """Submit vote"""
+    return Httpresponse('Submitting your vote...')

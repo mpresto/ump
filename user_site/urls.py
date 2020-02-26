@@ -27,8 +27,8 @@ urlpatterns = [
     path('users/<id>', views.user_detail, name='user_detail'),
     path('register',views.register_user, name='register'),
     path('login-page', views.my_login, name='login'),
-    
     path('login-submit-endpoint', views.submit_login),
-
     path('logout', auth_views.LogoutView.as_view(template_name='home.html'), name='logout'),
+    path('about_me_page', views.about_me, name='about_me'),
+    path('doggo_poll_page', views.doggo_polling),
 ]

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Doggo Polls</title>
+</head>
+
+{% extends 'base.html' %}
+
+{% block content %}
+<body>
+<h2>WHO DAT</h2>
+<p>Pick your favorite pupper!</p>
+
+<div class="image12">
+    <div class="imgContainer">
+        <p>Ozzy</p>
+        <img src="https://happydogswaterloo.com/wp-content/uploads/2015/09/Happy-bulldog-270x250.jpg" alt="" height="300"><br>
+        <a href="{% url 'home' %}">Vote for Ozzy!</a>
+    </div>
+<br><br>
+    <div class="imgContainer">
+        <p>Douglas</p>
+        <img src="https://waggingtailspetresort.com/wp-content/uploads/2018/09/dog-1270495_960_720-e1536787927667.jpg" alt="Douglas" height="300"><br>
+        <a href="{% url 'home' %}">Vote for Douglas!</a>
+    </div>
+</div>
+</body>
+
+{% endblock content %}
+</html>
