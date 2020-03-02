@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload A Doggo</title>
+</head>
+
+{% extends 'base.html' %}
+
+{% block content %}
+<body>
+<h2>Upload A Doggo</h2>
+
+<form method="post" action="{% url 'new_dog' %}">
+
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" name="next" value="{% url 'doggo_polls' %}">Upload My Dog</button>
+
+</form>
+</body>
+
+{% endblock content %}
+</html>

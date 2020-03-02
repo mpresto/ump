@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'u_app',
+    'doggo_polling',
+    # 'rest_framework',
 ]
 
 MIDDLEWARE = [

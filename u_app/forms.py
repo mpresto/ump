@@ -1,17 +1,29 @@
 from django import forms
 from django.db import models
-from .models import User
+from .models import MyUser, Doggo
+from user_site import settings
 import datetime
 
 
-# class Registration_Form(forms.ModelForm):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     # # username = forms.CharField(max_length=100, help_text='Username')
-#     # fullname = forms.CharField(max_length=100, help_text='First and Last Name')
-#     # email = forms.EmailField(max_length=150, help_text='Email')
-#     # birth_year = forms.IntegerField(help_text='YYYY')
-#     # # registration_date = forms.DateTimeField()
+class Registration_Form(forms.ModelForm):
+    user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    birth_date = forms.DateField(input_formats=settings.DATE_INPUT_FORMATS, help_text='DD-MM-YYYY')
+    password = forms.CharField(widget=forms.PasswordInput())
+    confirm_password = forms.CharField(widget=forms.PasswordInput())
 
-#     class Meta:
-#         model = User
-#         fields = ('username', 'password', 'fullname','email', 'birth_year',)
+    class Meta:
+        model = MyUser
+        fields = ('email', 'password', 'confirm_password', 'full_name', 'birth_date',)
+
+
+class Doggo_Upload_Form(forms.ModelForm):
+    name = forms.CharField(max_length=200)
+    image_url = models.CharField(max_length=500, help_text='''Paste a
+        URL to your puppers photo!''')
+    age = forms.IntegerField()
+    description = forms.CharField(max_length=500)
+    submitter = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+
+    class Meta:
+        model = Doggo
+        fields = ('name', 'image_url', 'age', 'description', 'submitter',)

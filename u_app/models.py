@@ -1,11 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.utils import timezone
-from user_site import settings
-
-
-from django import forms
-import datetime
 
 # Create your models here.
 
@@ -18,18 +12,25 @@ class MyUser(AbstractBaseUser):
     registration_date = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
 
-
     objects = BaseUserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['full_name', 'birth_date',]
 
 
-class Registration_Form(forms.ModelForm):
-    user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
-    birth_date = forms.DateField(input_formats=settings.DATE_INPUT_FORMATS, help_text='DD-MM-YYYY')
-    password = forms.CharField(widget=forms.PasswordInput())
-    confirm_password = forms.CharField(widget=forms.PasswordInput())
-    class Meta:
-        model = MyUser
-        fields = ('email', 'password', 'confirm_password', 'full_name', 'birth_date',)
+class Doggo(models.Model):
+    """A class for our doggos"""
+    name = models.CharField(max_length=200)
+    image_url = models.CharField(max_length=500)
+    age = models.IntegerField(blank=True)
+    description = models.CharField(max_length=500)
+    entry_date = models.DateTimeField(auto_now_add=True)
+    submitter = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    average_rating = models.IntegerField(default=0)
+
+
+class Rating(models.Model):
+    """A model for our rating records"""
+    user_who_voted = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    rated_doggo = models.ForeignKey(Doggo, on_delete=models.CASCADE)
+    vote_value = models.IntegerField(default=0)

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Doggo Polls</title>
+</head>
+
+{% extends 'base.html' %}
+
+{% block content %}
+<body>
+<h2>WHO DAT</h2>
+<p>Rate your favorite puppers!</p>
+
+<div>
+        <p>Ozzy</p>
+        <img src="https://happydogswaterloo.com/wp-content/uploads/2015/09/Happy-bulldog-270x250.jpg" alt="" height="300"><br>
+        <a href="{% url 'home' %}">See More About Ozzy!</a>
+        <br>
+        <form method="post" action="/submit-my-rating">
+            {% csrf_token %}
+            <label for="rating">Rating( /10):</label><br>
+            <input type="number" name="rate_value" min="10" max="20"><br>
+            <input type = submit>
+    </div>
+<br><br>
+<!--     <div class="imgContainer">
+        <p>Douglas</p>
+        <img src="https://waggingtailspetresort.com/wp-content/uploads/2018/09/dog-1270495_960_720-e1536787927667.jpg" alt="Douglas" height="300"><br>
+        <a href="{% url 'home' %}">See More About Douglas!</a>
+        <br>
+        <form method="post" action="/submit-my-rating">
+              <label for="rating">Rating( /10):</label><br>
+              <input type="integer" name="rate_value"><br>
+        <a href="{% url 'submit_vote' %}">submit</a> -->
+        <br><br><br><br>
+    </div>
+</div>
+</body>
+
+{% endblock content %}
+</html>
