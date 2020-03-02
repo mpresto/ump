@@ -11,10 +11,11 @@
 
 <h2>User Detail Page</h2>
 <body>
-    <p>You are viewing user details for:<p><h3>{{ user.full_name }}</h3>
-    <p>EMAIL: {{ user.email }}
-    <p>BIRTH DATE: {{ user.birth_date|date }}</p>
-    <p>USER SINCE: {{ user.registration_date|date }}</p>
+    <p><b>Important note: </b>{{some_other_data }}</p>
+    <p>You are viewing user details for:<p><h3>{{ all_about_user.user_detail.full_name }}</h3>
+    <p>EMAIL: {{ all_about_user.user_detail.email }}
+    <p>BIRTH DATE: {{ all_about_user.user_detail.birth_date|date }}</p>
+    <p>USER SINCE: {{ all_about_user.user_detail.registration_date|date }}</p>
 
 </body>
 

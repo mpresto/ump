@@ -27,10 +27,10 @@
 
 <form method="post" action="/login-submit-endpoint">
     {% csrf_token %}
-  <label for="fname">email:</label><br>
-  <input type="text" name="email"><br>
-  <label for="lname">password:</label><br>
-  <input type="text" name="password">
+  <label for="user.email">email:</label><br>
+  <input type="email" name="email"><br>
+  <label for="password">password:</label><br>
+  <input type="password" name="password">
   <br>
   <input type="submit" value="Log me in">
 </form>
