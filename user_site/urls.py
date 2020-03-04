@@ -34,5 +34,5 @@ urlpatterns = [
     path('doggo-poll-page', views.doggo_polling, name='doggo_polls'),
     path('submit-my-rating', views.submit_rating, name='submit_vote'),
     path('doggo-uploader', views.create_a_doggo, name='register_dog'),
-    path('doggos', views.doggo_detail_view, name='doggo_detail'),
+    path('doggos/<dog_id>', views.doggo_detail_view, name='doggo_detail'),
 ]

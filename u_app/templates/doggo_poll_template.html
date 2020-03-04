@@ -12,28 +12,32 @@
 <p>Rate your favorite puppers!</p>
 
 <div>
-    <p>Ozzy</p>
-    <img src="https://happydogswaterloo.com/wp-content/uploads/2015/09/Happy-bulldog-270x250.jpg" alt="" height="300"><br>
-    <a href="{% url 'home' %}">See More About Ozzy!</a>
-    <br>
+
+{% for dogvar in dogvars %}
+    <p>{{ dogvar.name }}</p>
+    <img src='{{dogvar.image_url}}' alt="" height="300"><br>
+    <a href="http://localhost:8000/doggos/{{dogvar.id}}">More About {{ dogvar.name }}</a>
+<!--     <br>
     <form method="post" action="/submit-my-rating">
         {% csrf_token %}
         <label for="rating">Rating( /10):</label><br>
         <input type="number" name="rate_value" min="10" max="20"><br>
         <input type = submit>
-    </div>
-<br><br><!-- 
-    <p>Douglas</p>
-    <img src="https://waggingtailspetresort.com/wp-content/uploads/2018/09/dog-1270495_960_720-e1536787927667.jpg" alt="Douglas" height="300"><br>
-    <a href="{% url 'home' %}">See More About Douglas!</a>
-    <br>
-    <form method="post" action="/submit-my-rating">
-          <label for="rating">Rating( /10):</label><br>
-          <input type="integer" name="rate_value"><br>
-    <a href="{% url 'submit_vote' %}">submit</a> -->
-        <br><br><br><br>
-    </div>
+    </div> -->
+
+    <form method="post" action="{% url 'submit_vote'%}">
+
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" name="vote_value">Submit Rating</button>
+
+    </form>
+
+{% endfor %}
+
 </div>
+
 </body>
 
 {% endblock content %}

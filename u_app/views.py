@@ -11,12 +11,15 @@ from django.contrib import messages
 from django.contrib.auth.hashers import PBKDF2PasswordHasher   # for hashing, duh
 
 from .models import MyUser, Doggo
-from .forms import Registration_Form, Doggo_Upload_Form
+from .forms import Registration_Form, Doggo_Upload_Form, Rating_Vote_Form
 from django.utils import timezone
 import datetime
 import pickle
 
 # Create your views here.
+
+
+# BASIC VIEWS
 
 
 # @api_view(['GET'])
@@ -25,12 +28,19 @@ def home_view(request):
     return render(request, 'home_template.html')
 
 
+@login_required
+def about_me(request):
+    """About Me page for my website"""
+    return TemplateResponse(request, 'about_me.html')
+
+
+# VIEWS FOR USERS
+
 # @api_view(['GET'])
 @login_required
 def users(request):
     """Controller for user mainpage"""
     users = MyUser.objects.all()
-
     return render(request, 'users.html', {'users': users})
 
 
@@ -48,7 +58,7 @@ def user_detail(request, id):
             {
                 'user_detail': user
             },
-        "some_other_data": "I am important!"
+        "some_other_data": "I'm an important hooman!"
     }
 
     return render(request, 'user_detail.html', data_for_template)
@@ -81,9 +91,11 @@ def register_user(request):
     return render(request, 'register.html', context)
 
 
-# MANUAL LOGIN/AUTHENTICATION
+# AUTHENTICATION
+
 
 def my_login(request):
+    """Render the login page for users"""
     return TemplateResponse(request, 'login.html')
 
 
@@ -96,9 +108,9 @@ def submit_login(request):
     # pull one user by email (based on form input email):
     try:
         user = MyUser.objects.get(email=email)
+
     except MyUser.DoesNotExist:
         # if user not found, return false authentication
-        # raise Http404('User not found.')
         messages.add_message(request, messages.INFO, 'Please try again!')
         return render(request, 'login.html')
 
@@ -116,27 +128,26 @@ def submit_login(request):
         return render(request, 'login.html')
 
 
-@login_required
-def about_me(request):
-    """About Me page for my website"""
-    return TemplateResponse(request, 'about_me.html')
-
+# VIEWS FOR DOGGOS
 
 @login_required
 def doggo_polling(request):
     """Page for voting on your favorite pups!"""
-    # populate doggo poll template
-    return TemplateResponse(request, 'doggo_poll_template.html')
-    # FAILSAFE: # return HttpResponse('Get ready for cute dogs')
+    dogs = Doggo.objects.all()
+
+    return render(request, 'doggo_poll_template.html', {'dogvars': dogs})
 
 
 @login_required
 def submit_rating(request):
-    """Submit vote"""
-    # submit form input
-    vote_value = request.POST.get('rate_value')
-    voter = MyUser
-    return HttpResponse(voter)
+    """Submit the rating vote"""
+    # create submission field
+    # vote_value = request.POST.get('rate_value')
+    # voter = request.POST.get(MyUser.id)
+    # return HttpResponse(voter)
+
+    if request.method != 'POST':
+        form = Rating_Vote_Form()
 
     # if 10 > vote_value > 20:
     #     messages.add_message(request, messages.INFO,
@@ -146,17 +157,17 @@ def submit_rating(request):
     #     messages.add_message(request, messages.SUCCESS, 'Submitted your rating!')
     #     return render(request, 'doggo_poll_template.html')
 
-    # collect submitting user's id
-
     # collect doggo's id
     # set doggo's rating for that user
     # return a success message
+
+    context = {'form': form}
+    return render(request, 'doggo_upload_template.html', context)
 
 
 @login_required
 def create_a_doggo(request):
     """Register a new user"""
-    # return HttpResponse('Upload A Dog')
     # create blank form
     if request.method != 'POST':
         form = Doggo_Upload_Form()
@@ -171,14 +182,28 @@ def create_a_doggo(request):
             new_doggo.entry_date = timezone.now()
             new_doggo.save(update_fields=['entry_date'])
 
-        # take user to doggie detail page
-            return HttpResponseRedirect('doggo_polls')
+            # take user to doggie detail page
+            return HttpResponseRedirect('doggo_detail')
 
     context = {'form': form}
     return render(request, 'doggo_upload_template.html', context)
 
 
+@login_required
+def doggo_detail_view(request, dog_id):
+    """Doggo detail page"""
+    # check for the dog's id
+    try:
+        this_doggo = Doggo.objects.get(id=dog_id)
 
-def doggo_detail_view(request):
-    return HttpResponse("Getting doggy details... thanks for your pupatience")
+    # return 404 if dog_id not found
+    except Doggo.DoesNotExist:
+        return TemplateResponse(request, 'dog_404_template.html')
 
+    # template information:
+    data_for_template = {
+        "doggo_info": {'dogvar_detail': this_doggo},
+        "some_other_data": "I'm a floofy angel!"
+        }
+
+    return render(request, 'doggo_detail_template.html', data_for_template)

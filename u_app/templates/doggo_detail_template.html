@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doggo Details</title>
+</head>
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<p>You are viewing details for:</p>
+<h2>{{ doggo_info.dogvar_detail.name }}</h2>
+<body>
+    <p><b>Important note from {{ doggo_info.dogvar_detail.name }}: </b>"{{ some_other_data }}"</p>
+    <img src='{{doggo_info.dogvar_detail.image_url}}' alt="" height="300"><br>
+    <p>AGE: {{ doggo_info.dogvar_detail.age }}
+    <p>DESCRIPTION: {{ doggo_info.dogvar_detail.description }}</p>
+    <p>AVERAGE RATING: {{ doggo_info.dogvar_detail.average_rating }} /10</p>
+    <p>SUBMITTED BY: {{ doggo_info.dogvar_detail.submitter }}</p>
+    <p>DOGGO SINCE: {{ doggo_info.dogvar_detail.entry_date }}</p>
+
+</body>
+
+{% endblock content %}
+<body>
+
+</body>
+</html>
