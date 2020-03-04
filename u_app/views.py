@@ -133,11 +133,10 @@ def doggo_polling(request):
 @login_required
 def submit_rating(request):
     """Submit vote"""
-    # return HttpResponse('Submitting your rating...')
     # submit form input
     vote_value = request.POST.get('rate_value')
-    # user_who_voted = request.POST.get(MyUser.id)
-    return HttpResponse(vote_value)
+    voter = MyUser
+    return HttpResponse(voter)
 
     # if 10 > vote_value > 20:
     #     messages.add_message(request, messages.INFO,
@@ -148,6 +147,7 @@ def submit_rating(request):
     #     return render(request, 'doggo_poll_template.html')
 
     # collect submitting user's id
+
     # collect doggo's id
     # set doggo's rating for that user
     # return a success message
@@ -176,3 +176,9 @@ def create_a_doggo(request):
 
     context = {'form': form}
     return render(request, 'doggo_upload_template.html', context)
+
+
+
+def doggo_detail_view(request):
+    return HttpResponse("Getting doggy details... thanks for your pupatience")
+
