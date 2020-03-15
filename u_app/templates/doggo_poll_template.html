@@ -9,6 +9,15 @@
 {% block content %}
 <body>
 <h2>WHO DAT</h2>
+
+{% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
 <p>Rate your favorite puppers!</p>
 
 <div>
@@ -17,28 +26,38 @@
     <p>{{ dogvar.name }}</p>
     <img src='{{dogvar.image_url}}' alt="" height="300"><br>
     <a href="http://localhost:8000/doggos/{{dogvar.id}}">More About {{ dogvar.name }}</a>
-<!--     <br>
-    <form method="post" action="/submit-my-rating">
-        {% csrf_token %}
+    <br>
+<!-- 
+HTML FORM -->
+<!--     <form method="post" action="/submit-my-rating">
+     {% csrf_token %}
         <label for="rating">Rating( /10):</label><br>
-        <input type="number" name="rate_value" min="10" max="20"><br>
+        <input type="number" name="rating" min="10" max="20"><br>
         <input type = submit>
-    </div> -->
+    </div> --->
 
-    <form method="post" action="{% url 'submit_vote'%}">
+<!-- 
+BOUND MODELFORM -->
+    <form method="post" action="{% url 'submit_vote' %}">
 
         {% csrf_token %}
         {{ form.as_p }}
 
-        <button type="submit" name="vote_value">Submit Rating</button>
+            <label for="user_who_voted"></label>
+            <input type="hidden" id="user_who_voted" name="user_who_voted" value="{{ user.id }}">
 
+            <label for="rated_doggo"></label>
+            <input type="hidden" id="rated_doggo" name="rated_doggo" value="{{ dogvar.id }}"><br>
+
+            <label for="vote_value">Rating:</label><br>
+            <input type="number" id="vote_value" name="vote_value" min="10" max="20">/10<br>
+        <button type="submit">Submit my Rating!</button>
     </form>
 
 {% endfor %}
 
-</div>
-
 </body>
 
 {% endblock content %}
+
 </html>

@@ -2,17 +2,17 @@
 <html>
 
 <head>
-    <title>User Detail Page</title>
+    <title>Hooman Detail Page</title>
 </head>
 
 {% extends 'base.html' %}
 
 {% block content %}
 
-<h2>User Detail Page</h2>
+<h2>Hooman Detail Page</h2>
 <body>
     <p><b>Important note: </b>{{some_other_data }}</p>
-    <p>You are viewing user details for:<p><h3>{{ all_about_user.user_detail.full_name }}</h3>
+    <p>You are viewing details for:<p><h3>{{ all_about_user.user_detail.full_name }}</h3>
     <p>EMAIL: {{ all_about_user.user_detail.email }}
     <p>BIRTH DATE: {{ all_about_user.user_detail.birth_date|date }}</p>
     <p>USER SINCE: {{ all_about_user.user_detail.registration_date|date }}</p>

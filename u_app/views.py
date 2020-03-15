@@ -10,8 +10,8 @@ from django.contrib import messages
 
 from django.contrib.auth.hashers import PBKDF2PasswordHasher   # for hashing, duh
 
-from .models import MyUser, Doggo
-from .forms import Registration_Form, Doggo_Upload_Form, Rating_Vote_Form
+from .models import MyUser, Doggo, Rating
+from .forms import Registration_Form, Doggo_Upload_Form, Rating_Form
 from django.utils import timezone
 import datetime
 import pickle
@@ -80,8 +80,10 @@ def register_user(request):
             new_user.last_login = timezone.now()
             new_user.save(update_fields=['last_login'])
 
-            authenticated_user = authenticate(email=new_user.email,
-                password=request.POST['password'])
+            authenticated_user = authenticate(
+                email=new_user.email,
+                password=request.POST['password']
+                )
 
         # log the new user in
             login(request, new_user)
@@ -140,29 +142,30 @@ def doggo_polling(request):
 
 @login_required
 def submit_rating(request):
-    """Submit the rating vote"""
-    # create submission field
-    # vote_value = request.POST.get('rate_value')
-    # voter = request.POST.get(MyUser.id)
-    # return HttpResponse(voter)
+    """Record user's rating value for the doggo"""
+
+    # render form
+    # vote_value = request.POST.get('vote_value')
+    # rated_doggo = request.POST.get('dogvar.id')
+    # user_who_voted = request.POST.get('user.id')
+
+    # return HttpResponse(user_who_voted)
 
     if request.method != 'POST':
-        form = Rating_Vote_Form()
+        form = Rating_Form()
 
-    # if 10 > vote_value > 20:
-    #     messages.add_message(request, messages.INFO,
-    #         'Rating must be between 10 and 20, because all dogs are 10/10 or more!')
-    #     return render(request, 'doggo_poll_template.html')
-    # else:
-    #     messages.add_message(request, messages.SUCCESS, 'Submitted your rating!')
-    #     return render(request, 'doggo_poll_template.html')
+    else:
+        # Process created form
+        form = Rating_Form(data=request.POST)
 
-    # collect doggo's id
-    # set doggo's rating for that user
-    # return a success message
-
-    context = {'form': form}
-    return render(request, 'doggo_upload_template.html', context)
+        if form.is_valid():
+            form.save()
+            messages.add_message(
+                    request, messages.SUCCESS, 'Rating submitted!'
+                    )
+            # return HttpResponse(status=204)
+        dogs = Doggo.objects.all()
+        return render(request, 'doggo_poll_template.html', {'dogvars': dogs})
 
 
 @login_required
@@ -182,8 +185,15 @@ def create_a_doggo(request):
             new_doggo.entry_date = timezone.now()
             new_doggo.save(update_fields=['entry_date'])
 
+            # get new_doggos's id
+            # info_for_template = Doggo.objects.get(id=new_doggo.dog_id)
+
             # take user to doggie detail page
-            return HttpResponseRedirect('doggo_detail')
+            # return HttpResponse(info_for_template)
+            messages.add_message(
+                request, messages.SUCCESS, 'Doggo successfully registered!'
+                )
+            return TemplateResponse(request, 'home_template.html')
 
     context = {'form': form}
     return render(request, 'doggo_upload_template.html', context)
