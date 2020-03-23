@@ -29,6 +29,7 @@ class Doggo(models.Model):
     description = models.CharField(max_length=500)
     entry_date = models.DateTimeField(auto_now_add=True)
     submitter = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    average_rating = models.IntegerField(default=0)
 
 
 class Rating(models.Model):
