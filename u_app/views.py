@@ -4,6 +4,7 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+
 # from rest_framework.decorators import api_view
 
 from django.contrib import messages
@@ -15,11 +16,12 @@ from .forms import Registration_Form, Doggo_Upload_Form, Rating_Form
 from django.utils import timezone
 import datetime
 import pickle
+import sqlite3
 
 # Create your views here.
 
 
-# BASIC VIEWS
+# BASIC PAGE VIEWS
 
 
 # @api_view(['GET'])
@@ -130,7 +132,7 @@ def submit_login(request):
         return render(request, 'login.html')
 
 
-# VIEWS FOR DOGGOS
+# VIEWS FOR DOGGOS #
 
 @login_required
 def doggo_polling(request):
@@ -143,14 +145,6 @@ def doggo_polling(request):
 @login_required
 def submit_rating(request):
     """Record user's rating value for the doggo"""
-
-    # render form
-    # vote_value = request.POST.get('vote_value')
-    # rated_doggo = request.POST.get('dogvar.id')
-    # user_who_voted = request.POST.get('user.id')
-
-    # return HttpResponse(user_who_voted)
-
     if request.method != 'POST':
         form = Rating_Form()
 
@@ -163,7 +157,8 @@ def submit_rating(request):
             messages.add_message(
                     request, messages.SUCCESS, 'Rating submitted!'
                     )
-            # return HttpResponse(status=204)
+            # update Doggo.average_rating()
+
         dogs = Doggo.objects.all()
         return render(request, 'doggo_poll_template.html', {'dogvars': dogs})
 
@@ -202,9 +197,23 @@ def create_a_doggo(request):
 @login_required
 def doggo_detail_view(request, dog_id):
     """Doggo detail page"""
+
+    def get_average_rating(self):
+        """Query database and calculate average rating for a doggo"""
+        connection = sqlite3.connect("db.sqlite3")
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT CAST(AVG(vote_value)as int) FROM u_app_rating
+            WHERE rated_doggo_id=?""", (dog_id,))
+
+        return cursor.fetchone()
+
     # check for the dog's id
     try:
         this_doggo = Doggo.objects.get(id=dog_id)
+        this_vote_average = get_average_rating(dog_id)
+        formatted_vote_average = ' '.join(map(str, (this_vote_average)))
 
     # return 404 if dog_id not found
     except Doggo.DoesNotExist:
@@ -213,7 +222,7 @@ def doggo_detail_view(request, dog_id):
     # template information:
     data_for_template = {
         "doggo_info": {'dogvar_detail': this_doggo},
-        "some_other_data": "I'm a floofy angel!"
+        "some_other_data": "I'm a floofy angel!",
+        "average_rating": formatted_vote_average,
         }
-
     return render(request, 'doggo_detail_template.html', data_for_template)

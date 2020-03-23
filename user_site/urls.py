@@ -31,8 +31,8 @@ urlpatterns = [
     path('logout', auth_views.LogoutView.as_view
             (template_name='home_template.html'), name='logout'),
     path('about-me-page', views.about_me, name='about_me'),
-    path('doggo-poll-page', views.doggo_polling, name='doggo_polls'),
+    path('doggos/poll-page', views.doggo_polling, name='doggo_polls'),
     path('submit-my-rating', views.submit_rating, name='submit_vote'),
-    path('doggo-uploader', views.create_a_doggo, name='register_dog'),
+    path('doggos/uploader', views.create_a_doggo, name='register_dog'),
     path('doggos/<dog_id>', views.doggo_detail_view, name='doggo_detail'),
 ]
