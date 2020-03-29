@@ -13,6 +13,8 @@ from django.contrib.auth.hashers import PBKDF2PasswordHasher   # for hashing, du
 
 from .models import MyUser, Doggo, Rating
 from .forms import Registration_Form, Doggo_Upload_Form, Rating_Form
+from collections import OrderedDict
+
 from django.utils import timezone
 import datetime
 import pickle
@@ -157,7 +159,6 @@ def submit_rating(request):
             messages.add_message(
                     request, messages.SUCCESS, 'Rating submitted!'
                     )
-            # update Doggo.average_rating()
 
         dogs = Doggo.objects.all()
         return render(request, 'doggo_poll_template.html', {'dogvars': dogs})
@@ -194,22 +195,22 @@ def create_a_doggo(request):
     return render(request, 'doggo_upload_template.html', context)
 
 
+def get_average_rating(self):
+    """Query database and calculate average rating for a doggo"""
+    connection = sqlite3.connect("db.sqlite3")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT ROUND(AVG(vote_value), 1) FROM u_app_rating
+        WHERE rated_doggo_id=?""", (self,))
+
+    return cursor.fetchone()
+
+
 @login_required
 def doggo_detail_view(request, dog_id):
     """Doggo detail page"""
-
-    def get_average_rating(self):
-        """Query database and calculate average rating for a doggo"""
-        connection = sqlite3.connect("db.sqlite3")
-        cursor = connection.cursor()
-
-        cursor.execute("""
-            SELECT CAST(AVG(vote_value)as int) FROM u_app_rating
-            WHERE rated_doggo_id=?""", (dog_id,))
-
-        return cursor.fetchone()
-
-    # check for the dog's id
+    # check for the dog's id and get average_rating
     try:
         this_doggo = Doggo.objects.get(id=dog_id)
         this_vote_average = get_average_rating(dog_id)
@@ -226,3 +227,41 @@ def doggo_detail_view(request, dog_id):
         "average_rating": formatted_vote_average,
         }
     return render(request, 'doggo_detail_template.html', data_for_template)
+
+
+def top_dog_view(request):
+    """View for the top dog scoreboard"""
+
+    """Query database and calculate average rating for a doggo,
+    list in order and limit to top 5 dogs"""
+    connection = sqlite3.connect("db.sqlite3")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT
+        rated_doggo_id,
+        ROUND(AVG(vote_value), 1) as average_rating
+        FROM u_app_rating
+        GROUP BY rated_doggo_id
+        ORDER BY average_rating DESC
+        LIMIT 6""")
+
+    ordered_results = cursor.fetchall()     # returns list of tuples (i, j)
+
+    # get the ordered list of ids for template:
+    ids = []
+    avgs = []
+    for (i, j) in ordered_results:
+        dog_info = Doggo.objects.get(id=i)
+        ids.append(dog_info)
+        avg = j
+        avgs.append(avg)
+
+    topdog_template_info = {
+        "topdogs": ids,
+        "topavg": avgs,
+    }
+    # return HttpResponse(avgs)
+    return render(
+        request, 'doggo_top_dogs_template.html', topdog_template_info
+        )

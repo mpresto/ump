@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dog Scoreboard</title>
+</head>
+
+{% extends 'base.html' %}
+
+{% block content %}
+<body>
+    <h2>THE CHAMPS</h2>
+    <br>
+<ol>
+{% for topdog in topdogs %}
+    <li><a href="http://localhost:8000/doggos/{{topdog.id}}">{{ topdog.name }}</a>
+    <p>Average Rating: {{ topavg }}</p>
+    <br>
+    <img src='{{topdog.image_url}}' alt="" height="300"><br>
+<br><br><br></li>
+{% endfor %}
+</ol>
+
+</body>
+
+{% endblock content %}
+</html>

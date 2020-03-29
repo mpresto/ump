@@ -22,22 +22,13 @@
 
 <div>
 
+<ul>
 {% for dogvar in dogvars %}
-    <p>{{ dogvar.name }}</p>
+
+    <p><b>{{ dogvar.name | upper }}</b></p>
     <img src='{{dogvar.image_url}}' alt="" height="300"><br>
     <a href="http://localhost:8000/doggos/{{dogvar.id}}">More About {{ dogvar.name }}</a>
     <br>
-<!-- 
-HTML FORM -->
-<!--     <form method="post" action="/submit-my-rating">
-     {% csrf_token %}
-        <label for="rating">Rating( /10):</label><br>
-        <input type="number" name="rating" min="10" max="20"><br>
-        <input type = submit>
-    </div> --->
-
-<!-- 
-BOUND MODELFORM -->
     <form method="post" action="{% url 'submit_vote' %}">
 
         {% csrf_token %}
@@ -53,8 +44,9 @@ BOUND MODELFORM -->
             <input type="number" id="vote_value" name="vote_value" min="10" max="20">/10<br>
         <button type="submit">Submit my Rating!</button>
     </form>
-
+<br><br><br>
 {% endfor %}
+</ul>
 
 </body>
 
